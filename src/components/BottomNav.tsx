@@ -1,10 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Building2, Briefcase, BarChart3, User } from "lucide-react";
+import { Home, BookOpen, User } from "lucide-react";
 
 const navItems = [
-  { path: "/", label: "HRMS", icon: Building2 },
-  { path: "/job-portal", label: "Job Portal", icon: Briefcase },
-  { path: "/gms", label: "GMS", icon: BarChart3 },
+  { path: "/", label: "Home", icon: Home },
+  { path: "/guides", label: "Guides", icon: BookOpen },
   { path: "/profile", label: "Profile", icon: User },
 ];
 
