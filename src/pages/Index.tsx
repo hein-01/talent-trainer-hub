@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
 const productTabs = ["HRMS", "Job Portal", "GMS", "POS"] as const;
@@ -42,6 +43,7 @@ const menuItemsByTab: Record<ProductTab, { label: string; badge?: string }[]> = 
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<ProductTab>("HRMS");
+  const navigate = useNavigate();
   const items = menuItemsByTab[activeTab];
 
   return (
@@ -73,6 +75,7 @@ const Index = () => {
         {items.map(({ label, badge }) => (
           <button
             key={label}
+            onClick={() => label === "Features" ? navigate(`/features?product=${encodeURIComponent(activeTab)}`) : undefined}
             className="w-full flex items-center justify-between bg-card border border-border rounded-2xl px-4 py-4 hover:shadow-md active:scale-[0.98] transition-all"
           >
             <span className="text-sm font-bold text-foreground">
