@@ -75,6 +75,7 @@ const Index = () => {
         {items.map(({ label, badge }) => (
           <button
             key={label}
+            onClick={() => label === "Features" ? navigate(`/features?product=${encodeURIComponent(activeTab)}`) : undefined}
             className="w-full flex items-center justify-between bg-card border border-border rounded-2xl px-4 py-4 hover:shadow-md active:scale-[0.98] transition-all"
           >
             <span className="text-sm font-bold text-foreground">
