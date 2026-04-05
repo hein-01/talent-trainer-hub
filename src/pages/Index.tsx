@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
 const productTabs = ["HRMS", "Job Portal", "GMS", "POS"] as const;
