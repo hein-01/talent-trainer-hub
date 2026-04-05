@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
 import ProfilePage from "./pages/ProfilePage";
+import FeaturesPage from "./pages/FeaturesPage";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 
