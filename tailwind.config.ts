@@ -13,7 +13,19 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Nunito', 'sans-serif'],
+      },
       colors: {
+        nav: {
+          DEFAULT: "hsl(var(--nav-background))",
+          active: "hsl(var(--nav-active))",
+          inactive: "hsl(var(--nav-inactive))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
