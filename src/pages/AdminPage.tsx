@@ -143,9 +143,15 @@ const AdminPage = () => {
       .eq("feature_id", featureId)
       .single();
     if (data) {
-      setFeatureDetails((prev) => ({ ...prev, [featureId]: data as FeatureDetail }));
-      setEditOverview(data.overview);
-      setEditUseCases(data.use_cases as any[] || []);
+      const detail: FeatureDetail = {
+        id: data.id,
+        feature_id: data.feature_id,
+        overview: data.overview,
+        use_cases: (data.use_cases as unknown as { industry: string; icon: string; description: string }[]) || [],
+      };
+      setFeatureDetails((prev) => ({ ...prev, [featureId]: detail }));
+      setEditOverview(detail.overview);
+      setEditUseCases(detail.use_cases);
     } else {
       setEditOverview("");
       setEditUseCases([]);
