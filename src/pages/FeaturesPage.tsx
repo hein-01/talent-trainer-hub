@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, ChevronRight, X, ZoomIn } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 import hrmsEmployeeDb from "@/assets/features/hrms-employee-database.jpg";
 import hrmsPayroll from "@/assets/features/hrms-payroll.jpg";
@@ -9,7 +10,8 @@ import hrmsPerformance from "@/assets/features/hrms-performance.jpg";
 import hrmsRecruitment from "@/assets/features/hrms-recruitment.jpg";
 import hrmsSelfService from "@/assets/features/hrms-self-service.jpg";
 
-const featuresByProduct: Record<string, { title: string; description: string; image: string }[]> = {
+// Fallback hardcoded features (used when DB is empty)
+const fallbackFeatures: Record<string, { title: string; description: string; image: string }[]> = {
   HRMS: [
     { title: "Employee Database", description: "Centralized storage for all employee records including personal details, documents, and employment history.", image: hrmsEmployeeDb },
     { title: "Payroll Management", description: "Automated salary calculations, tax deductions, and compliance with local labor laws.", image: hrmsPayroll },
@@ -44,8 +46,43 @@ const FeaturesPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const product = searchParams.get("product") || "HRMS";
-  const features = featuresByProduct[product] || featuresByProduct["HRMS"];
+  const [features, setFeatures] = useState<{ title: string; description: string; image: string }[]>([]);
+  const [loading, setLoading] = useState(true);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      setLoading(true);
+      const { data } = await supabase
+        .from("features")
+        .select("*")
+        .eq("product", product)
+        .order("sort_order", { ascending: true });
+
+      if (data && data.length > 0) {
+        setFeatures(
+          data.map((f) => ({
+            title: f.title,
+            description: f.description,
+            image: f.image_url || "",
+          }))
+        );
+      } else {
+        // Fallback to hardcoded data
+        setFeatures(fallbackFeatures[product] || fallbackFeatures["HRMS"]);
+      }
+      setLoading(false);
+    };
+    fetchFeatures();
+  }, [product]);
+
+  if (loading) {
+    return (
+      <div className="px-4 pt-6 pb-24 max-w-md mx-auto">
+        <p className="text-muted-foreground text-sm">Loading features...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 pt-6 pb-24 max-w-md mx-auto">
@@ -90,22 +127,24 @@ const FeaturesPage = () => {
               </div>
             </div>
             {/* Feature Screenshot */}
-            <button
-              onClick={(e) => { e.stopPropagation(); setLightboxImage(image); }}
-              className="relative mt-3 w-full rounded-xl overflow-hidden border border-border hover:border-primary/40 transition-colors cursor-zoom-in group"
-            >
-              <img
-                src={image}
-                alt={`${title} screenshot`}
-                loading="lazy"
-                width={1280}
-                height={720}
-                className="w-full h-auto object-cover"
-              />
-              <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
-                <ZoomIn size={14} className="text-foreground" />
-              </div>
-            </button>
+            {image && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxImage(image); }}
+                className="relative mt-3 w-full rounded-xl overflow-hidden border border-border hover:border-primary/40 transition-colors cursor-zoom-in group"
+              >
+                <img
+                  src={image}
+                  alt={`${title} screenshot`}
+                  loading="lazy"
+                  width={1280}
+                  height={720}
+                  className="w-full h-auto object-cover"
+                />
+                <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
+                  <ZoomIn size={14} className="text-foreground" />
+                </div>
+              </button>
+            )}
           </div>
         ))}
       </div>
@@ -116,16 +155,13 @@ const FeaturesPage = () => {
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
           onClick={() => setLightboxImage(null)}
         >
-          {/* Blurred backdrop */}
           <div className="absolute inset-0 bg-background/80 backdrop-blur-md" />
-          {/* Close button */}
           <button
             onClick={() => setLightboxImage(null)}
             className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
           >
             <X size={20} className="text-foreground" />
           </button>
-          {/* Image */}
           <img
             src={lightboxImage}
             alt="Feature screenshot"

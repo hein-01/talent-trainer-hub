@@ -10,6 +10,7 @@ import FeaturesPage from "./pages/FeaturesPage";
 import FeatureDetailPage from "./pages/FeatureDetailPage";
 import LoginPage from "./pages/LoginPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/feature-detail" element={<ProtectedRoute><FeatureDetailPage /></ProtectedRoute>} />
             <Route path="/guides" element={<ProtectedRoute><GuidesPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />

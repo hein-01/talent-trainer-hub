@@ -14,6 +14,74 @@ export type Database = {
   }
   public: {
     Tables: {
+      feature_details: {
+        Row: {
+          created_at: string
+          feature_id: string
+          id: string
+          overview: string
+          updated_at: string
+          use_cases: Json
+        }
+        Insert: {
+          created_at?: string
+          feature_id: string
+          id?: string
+          overview?: string
+          updated_at?: string
+          use_cases?: Json
+        }
+        Update: {
+          created_at?: string
+          feature_id?: string
+          id?: string
+          overview?: string
+          updated_at?: string
+          use_cases?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feature_details_feature_id_fkey"
+            columns: ["feature_id"]
+            isOneToOne: false
+            referencedRelation: "features"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      features: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          product: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          product: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          product?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
