@@ -52,7 +52,7 @@ const Index = () => {
     <div className="px-4 pt-6 pb-24 max-w-md mx-auto">
       {/* Welcome */}
       <h1 className="text-2xl font-extrabold text-foreground mb-4">
-        Mingalarbar, {displayName || "User"} 👋
+        မင်္ဂလာပါ, <span className="animate-gradient bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] bg-clip-text text-transparent">{displayName || "User"}</span> 👋
       </h1>
 
       {/* Product Tabs */}
