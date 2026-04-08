@@ -9,19 +9,29 @@ import { useToast } from "@/hooks/use-toast";
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
+  const [checking, setChecking] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Listen for the PASSWORD_RECOVERY event
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event) => {
-        if (event === "PASSWORD_RECOVERY") {
-          setReady(true);
+      (event, session) => {
+        if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
+          setSessionReady(true);
+          setChecking(false);
         }
       }
     );
+
+    // Also check if there's already a session (user may have been auto-signed in by the recovery link)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setSessionReady(true);
+      }
+      setChecking(false);
+    });
+
     return () => subscription.unsubscribe();
   }, []);
 
@@ -33,10 +43,31 @@ const ResetPasswordPage = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Password updated!", description: "You can now log in with your new password." });
+      await supabase.auth.signOut();
       navigate("/login");
     }
     setLoading(false);
   };
+
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background text-muted-foreground">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!sessionReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 bg-background">
+        <div className="w-full max-w-sm space-y-4 text-center">
+          <h1 className="text-2xl font-extrabold text-foreground">Invalid or Expired Link</h1>
+          <p className="text-sm text-muted-foreground">This password reset link is no longer valid. Please request a new one.</p>
+          <Button onClick={() => navigate("/login")} className="w-full">Back to Login</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-background">
