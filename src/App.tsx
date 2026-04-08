@@ -45,6 +45,7 @@ const App = () => (
             <Route path="/feature-detail" element={<ProtectedRoute><FeatureDetailPage /></ProtectedRoute>} />
             <Route path="/guides" element={<ProtectedRoute><GuidesPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
