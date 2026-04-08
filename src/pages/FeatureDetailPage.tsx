@@ -1,7 +1,10 @@
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Factory, Building2, ShieldCheck, Shirt } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const featureDetails: Record<string, Record<string, {
+// Hardcoded fallback (same as before)
+const fallbackDetails: Record<string, Record<string, {
   overview: string;
   useCases: { industry: string; icon: string; description: string }[];
 }>> = {
@@ -55,124 +58,6 @@ const featureDetails: Record<string, Record<string, {
       ],
     },
   },
-  "Job Portal": {
-    "Job Listings": {
-      overview: "Create and publish detailed job postings with requirements, descriptions, and application forms to attract the right candidates.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Post bulk openings for stitchers, cutters, and quality checkers with skill requirements and shift preferences." },
-        { industry: "Manufacturing Company", icon: "factory", description: "List specialized roles like CNC operators and quality engineers with certification requirements." },
-        { industry: "Insurance Company", icon: "shield", description: "Advertise agent positions by territory with license requirements and commission structure details." },
-      ],
-    },
-    "Candidate Tracking": {
-      overview: "Track candidates through every stage — application, screening, interview, offer — with a visual pipeline board.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Move hundreds of applicants through skill tests and trial shifts with batch actions and status updates." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Track engineering candidates through technical rounds, plant visits, and offer negotiations." },
-        { industry: "Insurance Company", icon: "shield", description: "Monitor agent recruitment pipeline with license verification status and training completion tracking." },
-      ],
-    },
-    "Resume Parsing": {
-      overview: "Automatically extract key information from resumes to speed up screening and reduce manual data entry.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Extract years of experience, machine skills, and previous factory names from bulk applications." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Parse technical qualifications, certifications, and project experience from engineering resumes." },
-        { industry: "Insurance Company", icon: "shield", description: "Extract license numbers, sales experience, and territory preferences from agent applications." },
-      ],
-    },
-    "Interview Scheduling": {
-      overview: "Coordinate interviews with calendar integration, automated reminders, and panel availability matching.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Schedule group skill assessments and trial shifts without disrupting production floor operations." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Coordinate multi-round technical interviews across different plant locations and time zones." },
-        { industry: "Insurance Company", icon: "shield", description: "Schedule field interviews with regional managers and auto-send location details to candidates." },
-      ],
-    },
-    "Analytics Dashboard": {
-      overview: "Track hiring metrics like time-to-hire, cost-per-hire, source effectiveness, and pipeline conversion rates.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Measure seasonal hiring efficiency, identify best recruitment sources, and track retention rates." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Analyze engineering talent pipeline, compare hiring costs across plants, and forecast staffing needs." },
-        { industry: "Insurance Company", icon: "shield", description: "Track agent recruitment ROI, onboarding time, and early attrition rates by territory." },
-      ],
-    },
-  },
-  GMS: {
-    "Ticket Management": {
-      overview: "Create, assign, and track grievance tickets with priority levels, SLA timers, and department routing.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Workers report safety hazards, wage disputes, or harassment — each auto-assigned to the right department with SLA tracking." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Track equipment complaints, shift disputes, and facility issues with priority-based routing to maintenance or HR." },
-        { industry: "Insurance Company", icon: "shield", description: "Handle agent commission disputes, customer escalations, and policy grievances with audit trails." },
-      ],
-    },
-    "Escalation Workflows": {
-      overview: "Automatic escalation rules based on time elapsed, severity level, and department — ensuring nothing falls through the cracks.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Safety complaints auto-escalate to plant manager if unresolved in 24 hours; wage issues escalate to finance head." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Equipment failures escalate from floor supervisor to plant director based on downtime duration." },
-        { industry: "Insurance Company", icon: "shield", description: "Customer complaints escalate through branch → regional → head office based on policy value and time." },
-      ],
-    },
-    "Anonymous Reporting": {
-      overview: "Allow employees to submit grievances anonymously for sensitive issues like harassment, fraud, or safety violations.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Workers report unsafe conditions or supervisor misconduct without fear of retaliation, with anonymous follow-up messaging." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Employees flag environmental violations or safety shortcuts anonymously, triggering confidential investigations." },
-        { industry: "Insurance Company", icon: "shield", description: "Staff report fraudulent claims or unethical sales practices through a secure anonymous channel." },
-      ],
-    },
-    "Resolution Tracking": {
-      overview: "Track resolution progress, add investigation notes, attach evidence, and maintain a complete audit trail.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Document each step of a workplace dispute resolution — from complaint to investigation to final action." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Track corrective actions for safety incidents with photo evidence, inspector notes, and compliance sign-offs." },
-        { industry: "Insurance Company", icon: "shield", description: "Maintain detailed resolution logs for regulatory audits, with timestamps and responsible party tracking." },
-      ],
-    },
-    "Compliance Reports": {
-      overview: "Generate compliance reports for internal audits, regulatory submissions, and board reviews.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Generate labor compliance reports for international brand audits, showing grievance resolution rates and timelines." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Produce OSHA-ready safety incident reports with trend analysis and corrective action summaries." },
-        { industry: "Insurance Company", icon: "shield", description: "Create regulatory compliance reports showing complaint handling metrics and resolution benchmarks." },
-      ],
-    },
-  },
-  POS: {
-    "Sales Processing": {
-      overview: "Fast checkout with barcode scanning, multiple payment methods, split bills, and instant receipt generation.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Process bulk fabric and accessory purchases from suppliers with purchase orders and goods receipt notes." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Handle spare parts sales to contractors with tax invoicing, credit terms, and delivery tracking." },
-        { industry: "Insurance Company", icon: "shield", description: "Process premium payments at branch offices with multiple payment modes and instant policy receipts." },
-      ],
-    },
-    "Inventory Management": {
-      overview: "Real-time stock tracking, low-stock alerts, automated reorder points, and multi-location inventory sync.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Track raw materials like fabric rolls, buttons, and threads with minimum stock alerts and supplier auto-reordering." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Monitor spare parts inventory across warehouses, track consumption rates, and forecast procurement needs." },
-        { industry: "Insurance Company", icon: "shield", description: "Manage branch office supplies, marketing materials, and policy document inventory with auto-replenishment." },
-      ],
-    },
-    "Customer Management": {
-      overview: "Track customer purchase history, loyalty points, preferences, and communication history.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Maintain buyer profiles with order history, fabric preferences, and credit terms for repeat wholesale customers." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Track B2B customer accounts with contract pricing, order patterns, and relationship management notes." },
-        { industry: "Insurance Company", icon: "shield", description: "Store policyholder profiles with coverage history, claim records, and renewal preferences for personalized service." },
-      ],
-    },
-    "Reporting & Analytics": {
-      overview: "Daily sales reports, product performance analysis, revenue trends, and custom dashboards.",
-      useCases: [
-        { industry: "Garment Factory", icon: "shirt", description: "Analyze fabric consumption trends, supplier pricing changes, and seasonal demand patterns for better procurement." },
-        { industry: "Manufacturing Company", icon: "factory", description: "Track spare parts sales by category, identify fast-moving items, and optimize warehouse stocking levels." },
-        { industry: "Insurance Company", icon: "shield", description: "Monitor branch-wise premium collection, policy mix analysis, and agent performance dashboards." },
-      ],
-    },
-  },
 };
 
 const iconMap: Record<string, typeof Factory> = {
@@ -182,12 +67,62 @@ const iconMap: Record<string, typeof Factory> = {
   building: Building2,
 };
 
+interface DetailData {
+  overview: string;
+  useCases: { industry: string; icon: string; description: string }[];
+}
+
 const FeatureDetailPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const product = searchParams.get("product") || "HRMS";
   const feature = searchParams.get("feature") || "";
-  const details = featureDetails[product]?.[feature];
+  const [details, setDetails] = useState<DetailData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      setLoading(true);
+      // Find the feature by product + title
+      const { data: featureRow } = await supabase
+        .from("features")
+        .select("id")
+        .eq("product", product)
+        .eq("title", feature)
+        .single();
+
+      if (featureRow) {
+        const { data: detailRow } = await supabase
+          .from("feature_details")
+          .select("*")
+          .eq("feature_id", featureRow.id)
+          .single();
+
+        if (detailRow) {
+          setDetails({
+            overview: detailRow.overview,
+            useCases: (detailRow.use_cases as unknown as { industry: string; icon: string; description: string }[]) || [],
+          });
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Fallback to hardcoded
+      const fallback = fallbackDetails[product]?.[feature];
+      setDetails(fallback || null);
+      setLoading(false);
+    };
+    fetchDetails();
+  }, [product, feature]);
+
+  if (loading) {
+    return (
+      <div className="px-4 pt-6 pb-24 max-w-md mx-auto">
+        <p className="text-muted-foreground text-sm">Loading...</p>
+      </div>
+    );
+  }
 
   if (!details) {
     return (
@@ -223,28 +158,32 @@ const FeatureDetailPage = () => {
       </div>
 
       {/* Industry Use Cases */}
-      <h2 className="text-sm font-bold text-foreground mb-3">Real-World Use Cases</h2>
-      <div className="space-y-3">
-        {details.useCases.map(({ industry, icon, description }) => {
-          const IconComponent = iconMap[icon] || Building2;
-          return (
-            <div
-              key={industry}
-              className="bg-card border border-border rounded-2xl p-4 hover:shadow-md transition-all"
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                  <IconComponent size={18} />
+      {details.useCases.length > 0 && (
+        <>
+          <h2 className="text-sm font-bold text-foreground mb-3">Real-World Use Cases</h2>
+          <div className="space-y-3">
+            {details.useCases.map(({ industry, icon, description }) => {
+              const IconComponent = iconMap[icon] || Building2;
+              return (
+                <div
+                  key={industry}
+                  className="bg-card border border-border rounded-2xl p-4 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <IconComponent size={18} />
+                    </div>
+                    <h3 className="font-bold text-sm text-foreground">{industry}</h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed pl-12">
+                    {description}
+                  </p>
                 </div>
-                <h3 className="font-bold text-sm text-foreground">{industry}</h3>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed pl-12">
-                {description}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 };
