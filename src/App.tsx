@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage";
 import FeaturesPage from "./pages/FeaturesPage";
 import FeatureDetailPage from "./pages/FeatureDetailPage";
 import LoginPage from "./pages/LoginPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 

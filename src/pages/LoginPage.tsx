@@ -62,6 +62,40 @@ const LoginPage = () => {
     setLoading(false);
   };
 
+  if (forgotMode) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 bg-background">
+        <div className="w-full max-w-sm space-y-6">
+          <div className="text-center">
+            <h1 className="text-2xl font-extrabold text-foreground">Reset Password</h1>
+            <p className="text-sm text-muted-foreground mt-1">Enter your email to receive a reset link</p>
+          </div>
+          <form onSubmit={handleForgotPassword} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Sending..." : "Send Reset Link"}
+            </Button>
+          </form>
+          <p className="text-center text-sm text-muted-foreground">
+            <button onClick={() => setForgotMode(false)} className="text-primary font-semibold hover:underline">
+              Back to Login
+            </button>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-background">
       <div className="w-full max-w-sm space-y-6">
@@ -110,6 +144,17 @@ const LoginPage = () => {
               minLength={6}
             />
           </div>
+          {!isSignUp && (
+            <div className="text-right">
+              <button
+                type="button"
+                onClick={() => setForgotMode(true)}
+                className="text-sm text-primary hover:underline"
+              >
+                Forgot password?
+              </button>
+            </div>
+          )}
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Please wait..." : isSignUp ? "Sign Up" : "Log In"}
           </Button>
