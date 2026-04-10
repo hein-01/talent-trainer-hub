@@ -26,7 +26,7 @@ const OutcomesPage = () => {
           <ArrowLeft size={22} className="text-foreground" />
         </button>
         <div>
-          <h1 className="text-xl font-extrabold text-foreground">Outcomes</h1>
+          <h1 className="text-xl font-extrabold text-foreground">Call Outcomes</h1>
           <p className="text-xs text-muted-foreground">{product}</p>
         </div>
       </div>

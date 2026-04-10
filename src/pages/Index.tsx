@@ -24,7 +24,7 @@ const defaultMenuItems = (badge: string) => [
   { label: "Sales Calls Training" },
   { label: "Quiz for Sales Calls", disabled: true },
   { label: "Leads to Call", badge },
-  { label: "Outcomes" },
+  { label: "Call Outcomes" },
 ];
 
 const menuItemsByTab: Record<ProductTab, { label: string; badge?: string; disabled?: boolean }[]> = {
@@ -90,7 +90,7 @@ const Index = () => {
               if (disabled) return;
               if (label === "Features") navigate(`/features?product=${encodeURIComponent(activeTab)}`);
               else if (label === "Leads to Call") navigate(`/leads-to-call?product=${encodeURIComponent(activeTab)}`);
-              else if (label === "Outcomes") navigate(`/outcomes?product=${encodeURIComponent(activeTab)}`);
+              else if (label === "Call Outcomes") navigate(`/outcomes?product=${encodeURIComponent(activeTab)}`);
             }}
             className={`w-full flex items-center justify-between border rounded-2xl px-4 py-4 transition-all ${
               disabled
