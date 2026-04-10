@@ -87,10 +87,10 @@ const FeatureDetailPage = () => {
       // Find the feature by product + title
       const { data: featureRow } = await supabase
         .from("features")
-        .select("id, image_url")
+        .select("id, image_url, description")
         .eq("product", product)
         .eq("title", feature)
-        .single();
+        .maybeSingle();
 
       let imageUrl = featureRow?.image_url || "";
 
@@ -99,7 +99,7 @@ const FeatureDetailPage = () => {
           .from("feature_details")
           .select("*")
           .eq("feature_id", featureRow.id)
-          .single();
+          .maybeSingle();
 
         if (detailRow) {
           setDetails({
@@ -110,6 +110,15 @@ const FeatureDetailPage = () => {
           setLoading(false);
           return;
         }
+
+        // No feature_details row — use the feature's own description
+        setDetails({
+          overview: featureRow.description || "No detailed description available yet.",
+          useCases: [],
+          imageUrl,
+        });
+        setLoading(false);
+        return;
       }
 
       // Fallback to hardcoded
