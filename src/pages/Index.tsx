@@ -20,14 +20,14 @@ const productFullNames: Record<ProductTab, string> = {
 
 const defaultMenuItems = (badge: string) => [
   { label: "Features" },
-  { label: "Quiz for Features" },
+  { label: "Quiz for Features", disabled: true },
   { label: "Sales Calls Training" },
-  { label: "Quiz for Sales Calls" },
+  { label: "Quiz for Sales Calls", disabled: true },
   { label: "Leads to Call", badge },
   { label: "Outcomes" },
 ];
 
-const menuItemsByTab: Record<ProductTab, { label: string; badge?: string }[]> = {
+const menuItemsByTab: Record<ProductTab, { label: string; badge?: string; disabled?: boolean }[]> = {
   HRMS: defaultMenuItems("100"),
   "Job Portal": defaultMenuItems("75"),
   GMS: defaultMenuItems("50"),
@@ -82,17 +82,23 @@ const Index = () => {
 
       {/* Menu Items */}
       <div className="space-y-2">
-        {items.map(({ label, badge }) => (
+        {items.map(({ label, badge, disabled }) => (
           <button
             key={label}
+            disabled={disabled}
             onClick={() => {
+              if (disabled) return;
               if (label === "Features") navigate(`/features?product=${encodeURIComponent(activeTab)}`);
               else if (label === "Leads to Call") navigate(`/leads-to-call?product=${encodeURIComponent(activeTab)}`);
               else if (label === "Outcomes") navigate(`/outcomes?product=${encodeURIComponent(activeTab)}`);
             }}
-            className="w-full flex items-center justify-between bg-card border border-border rounded-2xl px-4 py-4 hover:shadow-md active:scale-[0.98] transition-all"
+            className={`w-full flex items-center justify-between border rounded-2xl px-4 py-4 transition-all ${
+              disabled
+                ? "bg-muted border-border opacity-50 cursor-not-allowed"
+                : "bg-card border-border hover:shadow-md active:scale-[0.98]"
+            }`}
           >
-            <span className="text-sm font-bold text-foreground">
+            <span className={`text-sm font-bold ${disabled ? "text-muted-foreground" : "text-foreground"}`}>
               {label}
               {badge && (
                 <span className="ml-2 text-xs font-semibold text-primary">
