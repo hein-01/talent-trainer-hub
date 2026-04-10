@@ -141,7 +141,7 @@ const AdminPage = () => {
       .from("feature_details")
       .select("*")
       .eq("feature_id", featureId)
-      .single();
+      .maybeSingle();
     if (data) {
       const detail: FeatureDetail = {
         id: data.id,
