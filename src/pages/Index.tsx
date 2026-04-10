@@ -20,9 +20,9 @@ const productFullNames: Record<ProductTab, string> = {
 
 const defaultMenuItems = (badge: string) => [
   { label: "Features" },
-  { label: "Quiz for Features" },
+  { label: "Quiz for Features", disabled: true },
   { label: "Sales Calls Training" },
-  { label: "Quiz for Sales Calls" },
+  { label: "Quiz for Sales Calls", disabled: true },
   { label: "Leads to Call", badge },
   { label: "Outcomes" },
 ];
