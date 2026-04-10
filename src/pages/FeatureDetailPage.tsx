@@ -155,6 +155,18 @@ const FeatureDetailPage = () => {
         </div>
       </div>
 
+      {/* Feature Image */}
+      {details.imageUrl && (
+        <div className="mb-4 rounded-2xl overflow-hidden border border-border">
+          <img
+            src={details.imageUrl}
+            alt={`${feature} screenshot`}
+            className="w-full h-auto object-cover"
+            loading="lazy"
+          />
+        </div>
+      )}
+
       {/* Overview */}
       <div className="bg-card border border-border rounded-2xl p-5 mb-4">
         <h2 className="text-sm font-bold text-foreground mb-2">Overview</h2>
