@@ -366,16 +366,11 @@ const AdminPage = () => {
                           onChange={(e) => updateUseCase(i, "industry", e.target.value)}
                           placeholder="Industry (e.g. Garment Factory)"
                         />
-                        <select
+                        <Input
                           value={uc.icon}
                           onChange={(e) => updateUseCase(i, "icon", e.target.value)}
-                          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                        >
-                          <option value="shirt">Garment (shirt)</option>
-                          <option value="factory">Manufacturing (factory)</option>
-                          <option value="shield">Insurance (shield)</option>
-                          <option value="building">General (building)</option>
-                        </select>
+                          placeholder="Icon keyword (e.g. factory, shirt, shield, building)"
+                        />
                         <Textarea
                           value={uc.description}
                           onChange={(e) => updateUseCase(i, "description", e.target.value)}
