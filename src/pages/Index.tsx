@@ -82,17 +82,23 @@ const Index = () => {
 
       {/* Menu Items */}
       <div className="space-y-2">
-        {items.map(({ label, badge }) => (
+        {items.map(({ label, badge, disabled }) => (
           <button
             key={label}
+            disabled={disabled}
             onClick={() => {
+              if (disabled) return;
               if (label === "Features") navigate(`/features?product=${encodeURIComponent(activeTab)}`);
               else if (label === "Leads to Call") navigate(`/leads-to-call?product=${encodeURIComponent(activeTab)}`);
               else if (label === "Outcomes") navigate(`/outcomes?product=${encodeURIComponent(activeTab)}`);
             }}
-            className="w-full flex items-center justify-between bg-card border border-border rounded-2xl px-4 py-4 hover:shadow-md active:scale-[0.98] transition-all"
+            className={`w-full flex items-center justify-between border rounded-2xl px-4 py-4 transition-all ${
+              disabled
+                ? "bg-muted border-border opacity-50 cursor-not-allowed"
+                : "bg-card border-border hover:shadow-md active:scale-[0.98]"
+            }`}
           >
-            <span className="text-sm font-bold text-foreground">
+            <span className={`text-sm font-bold ${disabled ? "text-muted-foreground" : "text-foreground"}`}>
               {label}
               {badge && (
                 <span className="ml-2 text-xs font-semibold text-primary">
