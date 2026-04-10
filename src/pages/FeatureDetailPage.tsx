@@ -87,10 +87,12 @@ const FeatureDetailPage = () => {
       // Find the feature by product + title
       const { data: featureRow } = await supabase
         .from("features")
-        .select("id")
+        .select("id, image_url")
         .eq("product", product)
         .eq("title", feature)
         .single();
+
+      let imageUrl = featureRow?.image_url || "";
 
       if (featureRow) {
         const { data: detailRow } = await supabase
@@ -103,6 +105,7 @@ const FeatureDetailPage = () => {
           setDetails({
             overview: detailRow.overview,
             useCases: (detailRow.use_cases as unknown as { industry: string; icon: string; description: string }[]) || [],
+            imageUrl,
           });
           setLoading(false);
           return;
@@ -111,7 +114,7 @@ const FeatureDetailPage = () => {
 
       // Fallback to hardcoded
       const fallback = fallbackDetails[product]?.[feature];
-      setDetails(fallback || null);
+      setDetails(fallback ? { ...fallback, imageUrl } : null);
       setLoading(false);
     };
     fetchDetails();
