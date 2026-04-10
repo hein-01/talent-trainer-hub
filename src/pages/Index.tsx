@@ -27,7 +27,7 @@ const defaultMenuItems = (badge: string) => [
   { label: "Outcomes" },
 ];
 
-const menuItemsByTab: Record<ProductTab, { label: string; badge?: string }[]> = {
+const menuItemsByTab: Record<ProductTab, { label: string; badge?: string; disabled?: boolean }[]> = {
   HRMS: defaultMenuItems("100"),
   "Job Portal": defaultMenuItems("75"),
   GMS: defaultMenuItems("50"),
