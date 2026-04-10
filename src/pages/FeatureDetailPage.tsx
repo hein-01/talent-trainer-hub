@@ -70,6 +70,7 @@ const iconMap: Record<string, typeof Factory> = {
 interface DetailData {
   overview: string;
   useCases: { industry: string; icon: string; description: string }[];
+  imageUrl?: string;
 }
 
 const FeatureDetailPage = () => {
