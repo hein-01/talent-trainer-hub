@@ -25,14 +25,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-const mockLeadDetails: Record<string, { company: string; phones: { label: string; number: string }[] }> = {
-  "1": { company: "Acme Corp", phones: [{ label: "Office", number: "+1234567890" }] },
-  "2": { company: "Globex Inc", phones: [{ label: "Main", number: "+1987654321" }] },
-  "3": { company: "Initech Ltd", phones: [{ label: "HQ", number: "+1122334455" }] },
-  "4": { company: "Hooli Technologies", phones: [{ label: "Sales", number: "+1555000111" }] },
-  "5": { company: "Pied Piper", phones: [{ label: "Richard", number: "+1555000222" }, { label: "Jared", number: "+1555000333" }] },
-  "14": { company: "Wayne Enterprises", phones: [{ label: "Bruce", number: "+1555000444" }] },
-  "27": { company: "Dunder Mifflin", phones: [{ label: "Michael", number: "+1555000555" }, { label: "Dwight", number: "+1555000666" }] },
+const mockLeadDetails: Record<string, { company: string; brief?: string; phones: { label: string; number: string }[] }> = {
+  "1": { company: "Acme Corp", brief: "Manufacturing company (~200 employees). Decision maker: John Smith (HR Director). Currently using spreadsheets for payroll.", phones: [{ label: "Office", number: "+1234567890" }] },
+  "2": { company: "Globex Inc", brief: "Logistics firm. Decision maker: Sarah Lee (COO). Looking to digitize attendance tracking.", phones: [{ label: "Main", number: "+1987654321" }] },
+  "3": { company: "Initech Ltd", brief: "Mid-size IT services. Decision maker: Peter Gibbons (Ops Manager). Frustrated with current TPS reports.", phones: [{ label: "HQ", number: "+1122334455" }] },
+  "4": { company: "Hooli Technologies", brief: "Tech enterprise. Decision maker: Gavin Belson (CEO). Evaluating multiple HRMS vendors.", phones: [{ label: "Sales", number: "+1555000111" }] },
+  "5": { company: "Pied Piper", brief: "Startup, ~30 employees. Decision makers: Richard Hendricks (CEO), Jared Dunn (COO).", phones: [{ label: "Richard", number: "+1555000222" }, { label: "Jared", number: "+1555000333" }] },
+  "14": { company: "Wayne Enterprises", brief: "Large conglomerate. Decision maker: Bruce Wayne (Owner). Looking for enterprise-grade solution.", phones: [{ label: "Bruce", number: "+1555000444" }] },
+  "27": { company: "Dunder Mifflin", brief: "Paper distribution, regional branch ~25 employees. Decision makers: Michael Scott (Regional Mgr), Dwight Schrute (Asst. to RM).", phones: [{ label: "Michael", number: "+1555000555" }, { label: "Dwight", number: "+1555000666" }] },
 };
 
 const outcomeGroups: { label: string; options: string[] }[] = [
