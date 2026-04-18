@@ -148,14 +148,9 @@ const LeadsToCallPage = () => {
                       }
                       className="bg-card border border-border rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:shadow-md active:scale-[0.98] transition-all animate-fade-in"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="p-2 rounded-xl bg-primary/10 shrink-0">
-                          <Building2 size={20} className="text-primary" />
-                        </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="font-semibold text-foreground truncate">{lead.company}</span>
-                          <span className="text-xs text-muted-foreground truncate">{lead.outcome}</span>
-                        </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-semibold text-foreground truncate">{lead.company}</span>
+                        <span className="text-xs text-muted-foreground truncate">{lead.outcome}</span>
                       </div>
                       <ChevronRight size={18} className="text-muted-foreground shrink-0" />
                     </div>
