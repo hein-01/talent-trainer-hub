@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -158,7 +159,7 @@ const LeadDetailPage = () => {
 
   const handleSave = () => {
     if (!selectedOutcome) {
-      performNavigateBack();
+      toast.warning("Please select an outcome before saving.");
       return;
     }
     try {
