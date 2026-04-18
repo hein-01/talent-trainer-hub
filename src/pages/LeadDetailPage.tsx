@@ -244,24 +244,26 @@ const LeadDetailPage = () => {
               <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">
                 {group.label}
               </p>
-              <div className="grid grid-cols-3 gap-2">
-                {group.options.map((option) => {
-                  const isSelected = selectedOutcome === option;
-                  return (
-                    <button
-                      key={option}
-                      type="button"
-                      onClick={() => setSelectedOutcome(option)}
-                      className={`text-left rounded-xl border p-3 text-xs font-medium transition-all active:scale-[0.97] ${
-                        isSelected
-                          ? "bg-primary text-primary-foreground border-primary shadow-md"
-                          : "bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  );
-                })}
+              <div className="-mx-4 px-4 overflow-x-auto scrollbar-none snap-x snap-mandatory">
+                <div className="flex gap-2 pb-1">
+                  {group.options.map((option) => {
+                    const isSelected = selectedOutcome === option;
+                    return (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => setSelectedOutcome(option)}
+                        className={`shrink-0 snap-start w-32 text-left rounded-xl border p-3 text-xs font-medium transition-all active:scale-[0.97] ${
+                          isSelected
+                            ? "bg-primary text-primary-foreground border-primary shadow-md"
+                            : "bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           ))}
