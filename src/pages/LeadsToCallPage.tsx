@@ -133,10 +133,10 @@ const LeadsToCallPage = () => {
             const dealWonOutcomes = ["Deal Won / Closed Won"];
             const categorized = new Set([...trialOutcomes, ...meetingOutcomes, ...dealWonOutcomes]);
 
-            const trialLeads = calledLeads.filter((l) => trialOutcomes.includes(l.outcome));
-            const meetingLeads = calledLeads.filter((l) => meetingOutcomes.includes(l.outcome));
-            const dealWonLeads = calledLeads.filter((l) => dealWonOutcomes.includes(l.outcome));
-            const otherLeads = calledLeads.filter((l) => !categorized.has(l.outcome));
+            const trialLeads = trulyCalledLeads.filter((l) => trialOutcomes.includes(l.outcome));
+            const meetingLeads = trulyCalledLeads.filter((l) => meetingOutcomes.includes(l.outcome));
+            const dealWonLeads = trulyCalledLeads.filter((l) => dealWonOutcomes.includes(l.outcome));
+            const otherLeads = trulyCalledLeads.filter((l) => !categorized.has(l.outcome));
 
             const renderList = (list: SavedOutcome[], emptyText: string) =>
               list.length === 0 ? (
