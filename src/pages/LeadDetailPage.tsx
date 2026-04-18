@@ -110,6 +110,7 @@ const LeadDetailPage = () => {
 
   const detail = mockLeadDetails[leadId];
   const phones = detail?.phones || [{ label: "Main", number: "+0000000000" }];
+  const brief = detail?.brief || "No brief available for this lead yet. Add company business type, decision maker name, and key context here.";
 
   const STORAGE_KEY = "lead_outcomes_local";
 
