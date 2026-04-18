@@ -115,7 +115,7 @@ const LeadsToCallPage = () => {
                     <div className="flex flex-col min-w-0">
                       <span className="font-semibold text-foreground truncate">{lead.company}</span>
                       {lead.outcome && (
-                        <span className="text-xs text-muted-foreground truncate">{lead.outcome}</span>
+                        <span className="text-xs font-medium text-primary truncate">{lead.outcome}</span>
                       )}
                     </div>
                   </div>
