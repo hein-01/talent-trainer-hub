@@ -244,7 +244,9 @@ const LeadDetailPage = () => {
               <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">
                 {group.label}
               </p>
-              <div className="-mx-4 px-4 overflow-x-auto scrollbar-none snap-x snap-mandatory">
+              <div
+                className="-mx-4 px-4 overflow-x-auto snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
                 <div className="flex gap-2 pb-1">
                   {group.options.map((option) => {
                     const isSelected = selectedOutcome === option;
