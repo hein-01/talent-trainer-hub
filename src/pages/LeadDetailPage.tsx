@@ -207,6 +207,14 @@ const LeadDetailPage = () => {
         </div>
       </div>
 
+      {/* Brief */}
+      <div className="mb-6">
+        <label className="text-sm font-bold text-foreground mb-2 block">Brief</label>
+        <div className="bg-card border border-border rounded-2xl p-4">
+          <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{brief}</p>
+        </div>
+      </div>
+
       {/* Phone Numbers */}
       <div className="flex flex-col gap-3 mb-6">
         {phones.map((phone) => (
