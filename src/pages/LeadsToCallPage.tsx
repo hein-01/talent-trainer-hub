@@ -44,8 +44,27 @@ const LeadsToCallPage = () => {
     setCalledLeads(readSavedOutcomes(product));
   }, [product]);
 
-  const calledIds = new Set(calledLeads.map((c) => c.leadId));
-  const callingLeads = mockLeadsToCall.filter((l) => !calledIds.has(l.id));
+  const stayInCallingOutcomes = new Set([
+    "Callback Requested",
+    "Send Information / Send Pricing",
+    "Decision Maker Not Available",
+    "Call Back Later (general)",
+    "Not Now / Check Back Later",
+    "Lead Nurturing (keep in sequence)",
+  ]);
+
+  const followUpLeads = calledLeads.filter((c) => stayInCallingOutcomes.has(c.outcome));
+  const followUpIds = new Set(followUpLeads.map((c) => c.leadId));
+  const trulyCalledLeads = calledLeads.filter((c) => !stayInCallingOutcomes.has(c.outcome));
+  const trulyCalledIds = new Set(trulyCalledLeads.map((c) => c.leadId));
+
+  const uncalledLeads = mockLeadsToCall.filter(
+    (l) => !trulyCalledIds.has(l.id) && !followUpIds.has(l.id),
+  );
+  const callingLeads: { id: string; company: string; outcome?: string }[] = [
+    ...uncalledLeads,
+    ...followUpLeads.map((f) => ({ id: f.leadId, company: f.company, outcome: f.outcome })),
+  ];
 
   return (
     <div className="px-4 pt-6 pb-24 max-w-md mx-auto">
