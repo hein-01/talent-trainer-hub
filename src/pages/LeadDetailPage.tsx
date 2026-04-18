@@ -245,31 +245,37 @@ const LeadDetailPage = () => {
         />
       </div>
 
-      {/* Outcome Dropdown */}
+      {/* Outcome Cards */}
       <div className="mb-8">
-        <label className="text-sm font-bold text-foreground mb-2 block">Outcome</label>
-        <Select value={selectedOutcome} onValueChange={setSelectedOutcome}>
-          <SelectTrigger className="rounded-2xl">
-            <SelectValue placeholder="Select outcome..." />
-          </SelectTrigger>
-          <SelectContent className="max-h-[60vh]">
-            {outcomeGroups.map((group, idx) => (
-              <div key={group.label}>
-                {idx > 0 && <SelectSeparator />}
-                <SelectGroup>
-                  <SelectLabel className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                    {group.label}
-                  </SelectLabel>
-                  {group.options.map((option) => (
-                    <SelectItem key={option} value={option}>
+        <label className="text-sm font-bold text-foreground mb-3 block">Outcome</label>
+        <div className="flex flex-col gap-5">
+          {outcomeGroups.map((group) => (
+            <div key={group.label}>
+              <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">
+                {group.label}
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {group.options.map((option) => {
+                  const isSelected = selectedOutcome === option;
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setSelectedOutcome(option)}
+                      className={`text-left rounded-xl border p-3 text-xs font-medium transition-all active:scale-[0.97] ${
+                        isSelected
+                          ? "bg-primary text-primary-foreground border-primary shadow-md"
+                          : "bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"
+                      }`}
+                    >
                       {option}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
+                    </button>
+                  );
+                })}
               </div>
-            ))}
-          </SelectContent>
-        </Select>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Save Button */}
