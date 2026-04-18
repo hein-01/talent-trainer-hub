@@ -51,6 +51,13 @@ const LeadsToCallPage = () => {
     "Call Back Later (general)",
     "Not Now / Check Back Later",
     "Lead Nurturing (keep in sequence)",
+    // Contact Issues
+    "Wrong Number",
+    "No Answer / Voicemail Left",
+    "Invalid Email",
+    "Disconnected Number",
+    "Left Voicemail (no callback yet)",
+    "Gatekeeper Blocked",
   ]);
 
   const followUpLeads = calledLeads.filter((c) => stayInCallingOutcomes.has(c.outcome));
