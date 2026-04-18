@@ -103,36 +103,78 @@ const LeadsToCallPage = () => {
         </TabsContent>
 
         <TabsContent value="called" className="mt-0">
-          <div className="flex flex-col gap-3">
-            {calledLeads.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">
-                No leads called yet.
-              </p>
-            ) : (
-              calledLeads.map((lead) => (
-                <div
-                  key={lead.leadId}
-                  onClick={() =>
-                    navigate(
-                      `/lead-detail?product=${product}&outcome=Leads to Call&leadId=${lead.leadId}&company=${encodeURIComponent(lead.company)}`,
-                    )
-                  }
-                  className="bg-card border border-border rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:shadow-md active:scale-[0.98] transition-all animate-fade-in"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="p-2 rounded-xl bg-primary/10 shrink-0">
-                      <Building2 size={20} className="text-primary" />
+          {(() => {
+            const trialOutcomes = ["Trial Accepted / Trial Started"];
+            const meetingOutcomes = ["Meeting Scheduled", "Demo Requested"];
+            const dealWonOutcomes = ["Deal Won / Closed Won"];
+            const categorized = new Set([...trialOutcomes, ...meetingOutcomes, ...dealWonOutcomes]);
+
+            const trialLeads = calledLeads.filter((l) => trialOutcomes.includes(l.outcome));
+            const meetingLeads = calledLeads.filter((l) => meetingOutcomes.includes(l.outcome));
+            const dealWonLeads = calledLeads.filter((l) => dealWonOutcomes.includes(l.outcome));
+            const otherLeads = calledLeads.filter((l) => !categorized.has(l.outcome));
+
+            const renderList = (list: SavedOutcome[], emptyText: string) =>
+              list.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-8">{emptyText}</p>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {list.map((lead) => (
+                    <div
+                      key={lead.leadId}
+                      onClick={() =>
+                        navigate(
+                          `/lead-detail?product=${product}&outcome=Leads to Call&leadId=${lead.leadId}&company=${encodeURIComponent(lead.company)}`,
+                        )
+                      }
+                      className="bg-card border border-border rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:shadow-md active:scale-[0.98] transition-all animate-fade-in"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="p-2 rounded-xl bg-primary/10 shrink-0">
+                          <Building2 size={20} className="text-primary" />
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-semibold text-foreground truncate">{lead.company}</span>
+                          <span className="text-xs text-muted-foreground truncate">{lead.outcome}</span>
+                        </div>
+                      </div>
+                      <ChevronRight size={18} className="text-muted-foreground shrink-0" />
                     </div>
-                    <div className="flex flex-col min-w-0">
-                      <span className="font-semibold text-foreground truncate">{lead.company}</span>
-                      <span className="text-xs text-muted-foreground truncate">{lead.outcome}</span>
-                    </div>
-                  </div>
-                  <ChevronRight size={18} className="text-muted-foreground shrink-0" />
+                  ))}
                 </div>
-              ))
-            )}
-          </div>
+              );
+
+            return (
+              <Tabs defaultValue="trial" className="w-full">
+                <TabsList className="grid w-full grid-cols-4 rounded-2xl mb-4 h-auto">
+                  <TabsTrigger value="trial" className="rounded-xl text-xs">
+                    Trial ({trialLeads.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="meeting" className="rounded-xl text-xs">
+                    Meeting ({meetingLeads.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="deal-won" className="rounded-xl text-xs">
+                    Deal Won ({dealWonLeads.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="others" className="rounded-xl text-xs">
+                    Others ({otherLeads.length})
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="trial" className="mt-0">
+                  {renderList(trialLeads, "No trial leads yet.")}
+                </TabsContent>
+                <TabsContent value="meeting" className="mt-0">
+                  {renderList(meetingLeads, "No meeting leads yet.")}
+                </TabsContent>
+                <TabsContent value="deal-won" className="mt-0">
+                  {renderList(dealWonLeads, "No deals won yet.")}
+                </TabsContent>
+                <TabsContent value="others" className="mt-0">
+                  {renderList(otherLeads, "No other leads yet.")}
+                </TabsContent>
+              </Tabs>
+            );
+          })()}
         </TabsContent>
       </Tabs>
     </div>
