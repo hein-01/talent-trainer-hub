@@ -242,10 +242,10 @@ const LeadsToCallPage = () => {
             const dealWonOutcomes = ["Deal Won / Closed Won"];
             const categorized = new Set([...trialOutcomes, ...meetingOutcomes, ...dealWonOutcomes]);
 
-            const trialLeads = trulyCalledLeads.filter((l) => trialOutcomes.includes(l.outcome));
-            const meetingLeads = trulyCalledLeads.filter((l) => meetingOutcomes.includes(l.outcome));
-            const dealWonLeads = trulyCalledLeads.filter((l) => dealWonOutcomes.includes(l.outcome));
-            const otherLeads = trulyCalledLeads.filter((l) => !categorized.has(l.outcome));
+            const trialLeads = filteredTrulyCalled.filter((l) => trialOutcomes.includes(l.outcome));
+            const meetingLeads = filteredTrulyCalled.filter((l) => meetingOutcomes.includes(l.outcome));
+            const dealWonLeads = filteredTrulyCalled.filter((l) => dealWonOutcomes.includes(l.outcome));
+            const otherLeads = filteredTrulyCalled.filter((l) => !categorized.has(l.outcome));
 
             const formatTrialEndDate = (savedAt: number) => {
               const end = new Date(savedAt);
