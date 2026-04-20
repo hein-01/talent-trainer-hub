@@ -164,6 +164,25 @@ const LeadsToCallPage = () => {
         </div>
       </div>
 
+      <div className="relative mb-4">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search company..."
+          className="pl-9 pr-9 rounded-2xl"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-muted"
+            aria-label="Clear search"
+          >
+            <X size={14} className="text-muted-foreground" />
+          </button>
+        )}
+      </div>
+
       <Tabs defaultValue="calling" className="w-full">
         <TabsList className="grid w-full grid-cols-2 rounded-2xl mb-4">
           <TabsTrigger value="calling" className="rounded-xl">
