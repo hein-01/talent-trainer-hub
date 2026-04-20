@@ -50,6 +50,9 @@ const LeadsToCallPage = () => {
   const { user } = useAuth();
 
   const [calledLeads, setCalledLeads] = useState<SavedOutcome[]>([]);
+  const [search, setSearch] = useState("");
+  const matchesSearch = (company: string) =>
+    company.toLowerCase().includes(search.trim().toLowerCase());
 
   useEffect(() => {
     // Start with local copy for instant render.
