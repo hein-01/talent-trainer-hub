@@ -144,10 +144,12 @@ const LeadsToCallPage = () => {
   const uncalledLeads = mockLeadsToCall.filter(
     (l) => !trulyCalledIds.has(l.id) && !followUpIds.has(l.id),
   );
-  const callingLeads: { id: string; company: string; outcome?: string; notes?: string }[] = [
+  const callingLeadsAll: { id: string; company: string; outcome?: string; notes?: string }[] = [
     ...uncalledLeads,
     ...followUpLeads.map((f) => ({ id: f.leadId, company: f.company, outcome: f.outcome, notes: f.notes })),
   ];
+  const callingLeads = callingLeadsAll.filter((l) => matchesSearch(l.company));
+  const filteredTrulyCalled = trulyCalledLeads.filter((l) => matchesSearch(l.company));
 
   return (
     <div className="px-4 pt-6 pb-24 max-w-md mx-auto">
