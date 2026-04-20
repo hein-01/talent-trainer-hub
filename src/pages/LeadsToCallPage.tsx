@@ -191,7 +191,7 @@ const LeadsToCallPage = () => {
             Calling ({callingLeads.length})
           </TabsTrigger>
           <TabsTrigger value="called" className="rounded-xl">
-            Called ({trulyCalledLeads.length})
+            Called ({filteredTrulyCalled.length})
           </TabsTrigger>
         </TabsList>
 
