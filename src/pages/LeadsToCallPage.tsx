@@ -1,7 +1,8 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronRight, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { getLeadUuid, extractRescheduleAt } from "./LeadDetailPage";
@@ -49,6 +50,9 @@ const LeadsToCallPage = () => {
   const { user } = useAuth();
 
   const [calledLeads, setCalledLeads] = useState<SavedOutcome[]>([]);
+  const [search, setSearch] = useState("");
+  const matchesSearch = (company: string) =>
+    company.toLowerCase().includes(search.trim().toLowerCase());
 
   useEffect(() => {
     // Start with local copy for instant render.
@@ -140,10 +144,12 @@ const LeadsToCallPage = () => {
   const uncalledLeads = mockLeadsToCall.filter(
     (l) => !trulyCalledIds.has(l.id) && !followUpIds.has(l.id),
   );
-  const callingLeads: { id: string; company: string; outcome?: string; notes?: string }[] = [
+  const callingLeadsAll: { id: string; company: string; outcome?: string; notes?: string }[] = [
     ...uncalledLeads,
     ...followUpLeads.map((f) => ({ id: f.leadId, company: f.company, outcome: f.outcome, notes: f.notes })),
   ];
+  const callingLeads = callingLeadsAll.filter((l) => matchesSearch(l.company));
+  const filteredTrulyCalled = trulyCalledLeads.filter((l) => matchesSearch(l.company));
 
   return (
     <div className="px-4 pt-6 pb-24 max-w-md mx-auto">
@@ -160,13 +166,32 @@ const LeadsToCallPage = () => {
         </div>
       </div>
 
+      <div className="relative mb-4">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search company..."
+          className="pl-9 pr-9 rounded-2xl"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-muted"
+            aria-label="Clear search"
+          >
+            <X size={14} className="text-muted-foreground" />
+          </button>
+        )}
+      </div>
+
       <Tabs defaultValue="calling" className="w-full">
         <TabsList className="grid w-full grid-cols-2 rounded-2xl mb-4">
           <TabsTrigger value="calling" className="rounded-xl">
             Calling ({callingLeads.length})
           </TabsTrigger>
           <TabsTrigger value="called" className="rounded-xl">
-            Called ({trulyCalledLeads.length})
+            Called ({filteredTrulyCalled.length})
           </TabsTrigger>
         </TabsList>
 
@@ -217,10 +242,10 @@ const LeadsToCallPage = () => {
             const dealWonOutcomes = ["Deal Won / Closed Won"];
             const categorized = new Set([...trialOutcomes, ...meetingOutcomes, ...dealWonOutcomes]);
 
-            const trialLeads = trulyCalledLeads.filter((l) => trialOutcomes.includes(l.outcome));
-            const meetingLeads = trulyCalledLeads.filter((l) => meetingOutcomes.includes(l.outcome));
-            const dealWonLeads = trulyCalledLeads.filter((l) => dealWonOutcomes.includes(l.outcome));
-            const otherLeads = trulyCalledLeads.filter((l) => !categorized.has(l.outcome));
+            const trialLeads = filteredTrulyCalled.filter((l) => trialOutcomes.includes(l.outcome));
+            const meetingLeads = filteredTrulyCalled.filter((l) => meetingOutcomes.includes(l.outcome));
+            const dealWonLeads = filteredTrulyCalled.filter((l) => dealWonOutcomes.includes(l.outcome));
+            const otherLeads = filteredTrulyCalled.filter((l) => !categorized.has(l.outcome));
 
             const formatTrialEndDate = (savedAt: number) => {
               const end = new Date(savedAt);
